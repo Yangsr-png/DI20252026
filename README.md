@@ -44,7 +44,7 @@ git push
 
 Esto actualizará **solo tu rama** en GitHub.
 
-### 4. Cuando trabajeís en grupo
+### 4. Cuando trabajéis en grupo
 
 Para mergear con la rama main tus avances:
 
