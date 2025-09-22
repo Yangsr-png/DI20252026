@@ -44,16 +44,16 @@ git push
 
 Esto actualizará **solo tu rama** en GitHub.
 
-### 4. Entregar tu trabajo
+### 4. Cuando trabajeís en grupo
 
-Cuando quieras entregar lo que llevas hecho:
+Para mergear con la rama main tus avances:
 
 1. Ve al repositorio en GitHub.
 2. Pulsa **New Pull Request**.
 3. Elige tu rama (`alumno-nombre`) como origen y `main` como destino.
 4. Crea el Pull Request.
 
-El profesorado revisará tu trabajo y decidirá si lo fusiona en `main`.
+El responsable de la rama main revisará tu trabajo y decidirá si lo fusiona en `main`.
 
 ---
 
