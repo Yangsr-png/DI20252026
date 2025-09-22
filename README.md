@@ -2,8 +2,6 @@
 
 Trabajar en rama personal. Para crear vuestra rama os dejo aquí una guía
 
-Perfecto 🙌. Aquí tienes un bloque de **instrucciones claras para el alumnado**, listo para pegar directamente en el `README.md` de tu repo.
-
 ---
 
 ## 📝 Instrucciones para los alumnos
