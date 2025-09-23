@@ -1,7 +1,7 @@
 
 
 ```js
-const estado = new Map();
+const estado = new Ma p();
 ```
 
 y no un simple objeto `{}` o un array `[]`. La elección de `Map` resuelve ciertos **problemas de gestión de estado**:
