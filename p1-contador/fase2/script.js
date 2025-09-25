@@ -33,7 +33,7 @@ function bump(el) {
   setTimeout(() => el.classList.remove("bump"), 160);
 }
 
-// Render completo desde estado
+// coge los nombre de estado, los ordena y los muestra en una tarjeta cada uno
 function renderLista() {
   lista.innerHTML = "";
   const nombres = Array.from(estado.keys()).sort((a, b) =>
@@ -119,12 +119,14 @@ lista.addEventListener("click", (ev) => {
   bump(span);
 });
 
+//boton reset
 btnReset.addEventListener("click", () => {
   for (const n of estado.keys()) estado.set(n, 10);
   renderLista();
   setEstado("Todos los contadores han sido reiniciados a 10.");
 });
 
+//boton cargar archivo remoto
 btnCargar.addEventListener("click", async () => {
   try {
     await cargarNombresDesdeTxt("nombres.txt");
