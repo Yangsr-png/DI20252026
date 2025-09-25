@@ -112,10 +112,18 @@ lista.addEventListener("click", (ev) => {
 
   if (btn.classList.contains("btn-mas")) valor += 1;
   if (btn.classList.contains("btn-menos")) valor -= 1;
+  if(btn.classList.contains("btn-decimal-menos")) valor-=0.1;
+  if(btn.classList.contains("btn-decimal-mas")) valor +=0.1;
+  if(btn.classList.contains("btn-muerte")) valor =0;
+  if(btn.classList.contains("btn-reset")) valor =10;
 
   estado.set(nombre, valor);
+
+  //controla que el numero no pueda ser mas alto que 10 ni mas bajo que 0
+  if (valor > 10) valor = 10;
+  if (valor < 0) valor = 0;
   span.dataset.valor = String(valor);
-  span.textContent = valor;
+  span.textContent = valor.toFixed(1);
   bump(span);
 });
 
