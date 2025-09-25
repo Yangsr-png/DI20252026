@@ -1,63 +1,136 @@
-let contador = 10;
-const spanContador = document.getElementById("contador");
-const btnMas = document.getElementById("btn-mas");
-const btnMenos = document.getElementById("btn-menos");
-const btnReset = document.getElementById("btn-reset");
-const btnMasDecimal = document.getElementById("btn-mas-decimal");
-const btnMenosDecimal = document.getElementById("btn-menos-decimal");
 
 
+// Obtener referencias a los elementos del DOM
+const btnReset = document.getElementById("btn-reset"); // Botón para reiniciar todos los contadores
+const cardsContainer = document.getElementById("cards-container"); // Contenedor de tarjetas
+const addStudentForm = document.getElementById("add-student-form"); // Formulario para agregar estudiantes
+const studentNameInput = document.getElementById("student-name"); // Input del nombre
 
-function actualizarContador() {
-  // Mostrar hasta 1 decimal si es necesario
-  spanContador.textContent = Number.isInteger(contador) ? contador : contador.toFixed(1);
+// Array para guardar las tarjetas de los estudiantes
+let students = [];
 
-  // Efecto visual para marcar el cambio
-  spanContador.classList.add("changed");
-  setTimeout(() => spanContador.classList.remove("changed"), 200);
-}
-
-
-
+// Limita el valor del contador entre 0 y 10
 function limitarContador(valor) {
   if (valor < 0) return 0;
   if (valor > 10) return 10;
   return valor;
 }
 
-btnMas.addEventListener("click", () => {
-  contador = limitarContador(contador + 1);
-  actualizarContador();
+// Crea una tarjeta de estudiante con su contador y botones
+function crearTarjetaEstudiante(nombre) {
+  const card = document.createElement("div"); // Tarjeta principal
+  card.className = "student-card";
+
+  const title = document.createElement("h2"); // Nombre del estudiante
+  title.textContent = nombre;
+  card.appendChild(title);
+
+  const spanContador = document.createElement("span"); // Contador visual
+  spanContador.className = "contador";
+  spanContador.textContent = "10";
+  card.appendChild(spanContador);
+
+  const botonesDiv = document.createElement("div"); // Contenedor de botones
+  botonesDiv.className = "botones";
+
+  // Botón -1
+  const btnMenos = document.createElement("button");
+  btnMenos.textContent = "-1";
+  botonesDiv.appendChild(btnMenos);
+
+  // Botón +1
+  const btnMas = document.createElement("button");
+  btnMas.textContent = "+1";
+  botonesDiv.appendChild(btnMas);
+
+  // Botón -0.1
+  const btnMenosDecimal = document.createElement("button");
+  btnMenosDecimal.textContent = "-0.1";
+  botonesDiv.appendChild(btnMenosDecimal);
+
+  // Botón +0.1
+  const btnMasDecimal = document.createElement("button");
+  btnMasDecimal.textContent = "+0.1";
+  botonesDiv.appendChild(btnMasDecimal);
+
+  card.appendChild(botonesDiv);
+
+  let contador = 10; // Valor inicial del contador
+
+  // Actualiza el valor mostrado del contador
+  function actualizarContador() {
+    spanContador.textContent = Number.isInteger(contador) ? contador : contador.toFixed(1);
+    // Efecto visual al cambiar
+    spanContador.classList.add("changed");
+    setTimeout(() => spanContador.classList.remove("changed"), 200);
+    // Quita clases anteriores de nivel
+    card.classList.remove("nivel-bajo", "nivel-medio", "nivel-alto");
+    // Asigna clase según el valor
+    if (contador <= 3) {
+      card.classList.add("nivel-bajo");
+    } else if (contador <= 7) {
+      card.classList.add("nivel-medio");
+    } else {
+      card.classList.add("nivel-alto");
+    }
+  }
+
+
+  const btnEliminar = document.createElement("button");
+  btnEliminar.textContent = "x";
+  btnEliminar.className = "btn-eliminar";
+
+  card.appendChild(btnEliminar);
+
+  btnEliminar.addEventListener("click", () => {
+  card.remove(); // Elimina del DOM
+  // Elimina del array de estudiantes
+  students = students.filter(c => c !== card);
 });
 
-btnMenos.addEventListener("click", () => {
-  contador = limitarContador(contador - 1);
-  actualizarContador();
-});
 
-btnMasDecimal.addEventListener("click", () => {
-  contador = limitarContador(Math.round((contador + 0.1) * 10) / 10);
-  actualizarContador();
-});
-
-btnMenosDecimal.addEventListener("click", () => {
-  contador = limitarContador(Math.round((contador - 0.1) * 10) / 10);
-  actualizarContador();
-});
-
-btnReset.addEventListener("click", () => {
-  if (contador < 10) {
-    contador = 10;
+  // Eventos de los botones para modificar el contador
+  btnMas.addEventListener("click", () => {
+    contador = limitarContador(contador + 1);
     actualizarContador();
+  });
+  btnMenos.addEventListener("click", () => {
+    contador = limitarContador(contador - 1);
+    actualizarContador();
+  });
+  btnMasDecimal.addEventListener("click", () => {
+    contador = limitarContador(Math.round((contador + 0.1) * 10) / 10);
+    actualizarContador();
+  });
+  btnMenosDecimal.addEventListener("click", () => {
+    contador = limitarContador(Math.round((contador - 0.1) * 10) / 10);
+    actualizarContador();
+  });
+
+  // Método para reiniciar el contador a 10 si es menor
+  card.resetContador = function() {
+    if (contador < 10) {
+      contador = 10;
+      actualizarContador();
+    }
+  };
+
+  return card;
+}
+
+// Evento para agregar un nuevo estudiante al enviar el formulario
+addStudentForm.addEventListener("submit", function(e) {
+  e.preventDefault(); // Evita recargar la página
+  const nombre = studentNameInput.value.trim();
+  if (nombre) {
+    const card = crearTarjetaEstudiante(nombre); // Crea la tarjeta
+    cardsContainer.appendChild(card); // La añade al contenedor
+    students.push(card); // La guarda en el array
+    studentNameInput.value = ""; // Limpia el input
   }
 });
 
+// Evento para reiniciar todos los contadores
 btnReset.addEventListener("click", () => {
-  for (const n of estado.keys()) estado.set(n, 10);
-  renderLista();
-  setEstado("Todos los contadores han sido reiniciados a 10.");
+  students.forEach(card => card.resetContador());
 });
-
-
-// Inicialización
-actualizarContador();
