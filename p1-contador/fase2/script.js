@@ -19,6 +19,16 @@ function renderPersona(nombre, valor = 10) {
   const span = node.querySelector(".contador");
   span.textContent = valor;
   span.dataset.valor = String(valor);
+  if (valor > 7.5) {
+    span.classList.remove("orange", "red")
+    span.classList.add("green")
+  } else if (valor > 2.5) {
+    span.classList.remove("green", "red")
+    span.classList.add("orange")
+  } else {
+    span.classList.remove("green", "orange")
+    span.classList.add("red")
+  }
   return node;
 }
 
@@ -106,6 +116,17 @@ lista.addEventListener("click", (ev) => {
 
   if (btn.classList.contains("btn-mas") && (valor < 10)) valor += 1;
   if (btn.classList.contains("btn-menos") && (valor > 0)) valor -= 1;
+
+  if (valor > 7.5) {
+    span.classList.remove("orange", "red")
+    span.classList.add("green")
+  } else if (valor > 2.5) {
+    span.classList.remove("green", "red")
+    span.classList.add("orange")
+  } else {
+    span.classList.remove("green", "orange")
+    span.classList.add("red")
+  }
 
   estado.set(nombre, valor);
   span.dataset.valor = String(valor);
