@@ -4,16 +4,40 @@
   <meta charset="UTF-8">
   <title>Contador de Clase</title>
   <link rel="stylesheet" href="styles.css">
+
 </head>
 <body>
   <h1>Contador de Clase</h1>
+
+  <!-- Contador general -->
   <div id="contador-container">
-    <span id="contador">10</span>
+    Profesor: <span id="contador">10</span>
     <div class="botones">
       <button id="btn-menos">-1</button>
       <button id="btn-mas">+1</button>
+      <button id="btn-muerte">BOTÓN DE LA MUERTE</button>
     </div>
   </div>
+
+  <hr>
+
+  <!-- Contadores por alumno -->
+  <div class="alumno">
+    Alumno 1: <span class="contador" data-contador="8">8</span>
+    <button class="btn-muerte-alumno">BOTÓN DE LA MUERTE</button>
+  </div>
+  <div class="alumno">
+    Alumno 2: <span class="contador" data-contador="6">6</span>
+    <button class="btn-muerte-alumno">BOTÓN DE LA MUERTE</button>
+  </div>
+  <div class="alumno">
+    Alumno 3: <span class="contador" data-contador="9">9</span>
+    <button class="btn-muerte-alumno">BOTÓN DE LA MUERTE</button>
+  </div>
+
+  <br>
+  <!-- Botón para restar 1 a todos los alumnos -->
+  <button id="btn-menos-multiples">Restar 1 a todos</button>
 
   <script src="script.js"></script>
 </body>

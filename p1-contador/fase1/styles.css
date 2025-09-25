@@ -1,0 +1,18 @@
+
+body {
+    width: 100%;
+}
+
+.changed { 
+      color: blue; 
+      transition: color 0.2s; 
+    }
+    .alumno {
+      margin: 5px 0;
+    }
+
+    button {
+        width: 100px;
+        border-radius: 10px;
+        margin-left: 10px;
+    }
