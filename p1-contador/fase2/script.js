@@ -104,8 +104,12 @@ lista.addEventListener("click", (ev) => {
   const span = card.querySelector(".contador");
   let valor = Number(span.dataset.valor || "10");
 
-  if (btn.classList.contains("btn-mas")) valor += 1;
-  if (btn.classList.contains("btn-menos")) valor -= 1;
+  if (btn.classList.contains("btn-mas") && valor < 10) valor += 0.1;  
+  if (btn.classList.contains("btn-menos") && valor > 0) valor -= 0.1;
+
+  if (btn.classList.contains("btn-muerte")) valor = 0;
+
+  valor = Math.round(valor * 10) / 10
 
   estado.set(nombre, valor);
   span.dataset.valor = String(valor);
