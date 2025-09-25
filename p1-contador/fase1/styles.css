@@ -1,0 +1,39 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.tarjetas {
+    border: 1px solid #ccc;
+    width: fit-content;
+    border-radius: 15px;
+    padding: 16px;
+    margin: 16px 0;
+    background-color: #f9f9f9;
+}
+
+.nombre {
+    font-size: 1.5em;
+    margin-bottom: 8px;
+}
+
+#contador {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.botones {
+    margin-top: 12px;
+}
+
+.botones button {
+    margin-right: 8px;
+}
+#btn-zero{
+    width: 60%;
+    height: 50px;
+    font-size: 2rem;
+    background-color: steelblue;
+}
