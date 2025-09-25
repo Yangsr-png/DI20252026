@@ -1,6 +1,6 @@
 let contador = 10;
 let contdec=0.1;
-
+//AÑADIR COLORES AL BAJAR Y SUBIR NOTA (VERDE Y ROJO)
 const spanContador = document.getElementById("contador");
 const spanDecimal= document.getElementById("dec-valor");
 const btnMas = document.getElementById("btn-mas");
@@ -40,6 +40,10 @@ function actualizarContador() {
   btn01Mas.textContent = `+${contdec}`;
    btn01Menos.textContent = `-${contdec}`;
 
+  // Calcula el color según el valor del contador (de 0 a 10)
+  // const hue = Math.round((contador / 10) * 360); // 0 = rojo, 10 = rojo (ciclo completo)
+  // spanContador.style.color = `hsl(${hue}, 80%, 50%)`;
+  
   // Efecto visual para marcar el cambio
   spanContador.classList.add("changed");
   setTimeout(() => spanContador.classList.remove("changed"), 200);
