@@ -7,8 +7,10 @@ const btnReset = document.getElementById("btn-reset");
 const inputArchivo = document.getElementById("input-archivo");
 const tpl = document.getElementById("tpl-persona");
 
+
 // --------- Utilidades ---------
 function normalizaNombre(s) {
+  //devuelve los nobres sin acentos, para asi poder ordenarlos bien.
   return s.normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
 }
 
