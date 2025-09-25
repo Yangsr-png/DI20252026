@@ -9,6 +9,14 @@ const inputArchivo = document.getElementById("input-archivo");
 //plantilla HTML que sirve para crear la tarjeta de cada persona.
 const tpl = document.getElementById("tpl-persona");
 
+//array caja misteriosa
+const accionesSorpresa = [
+  { texto: "Tus puntos se duplican", efecto: (valor) => valor * 2 },
+  { texto: "Pierdes 3 puntos", efecto: (valor) => valor - 3 },
+  { texto: "Ganas 5 puntos", efecto: (valor) => valor + 5 },
+  { texto: "Vuelves a 10", efecto: () => 10 }
+];
+
 
 // --------- Utilidades ---------
 function normalizaNombre(s) {
@@ -116,6 +124,17 @@ lista.addEventListener("click", (ev) => {
   if(btn.classList.contains("btn-decimal-mas")) valor +=0.1;
   if(btn.classList.contains("btn-muerte")) valor =0;
   if(btn.classList.contains("btn-reset")) valor =10;
+
+  if (btn.classList.contains("btn-sorpresa")) {
+  // escoger acción al azar
+  const accion = accionesSorpresa[Math.floor(Math.random() * accionesSorpresa.length)];
+
+  // aplicar el efecto
+  valor = accion.efecto(valor);
+
+  // mensaje para el usuario
+  setEstado(`${nombre}: ${accion.texto}`);
+  } 
 
   estado.set(nombre, valor);
 
