@@ -1,24 +1,36 @@
 // Estado simple en memoria: { nombre: valor }
-const estado = new Map();
-const lista = document.getElementById("lista");
-const estadoUI = document.getElementById("estado");
-const btnCargar = document.getElementById("btn-cargar-nombres");
+const estado = new Map(); // Mapa que guarda los nombres y sus valores
+const lista = document.getElementById("lista");// Contenedor donde se generan las personas
+const estadoUI = document.getElementById("estado");// Mensajes de estado accesibles
+const btnCargar = document.getElementById("btn-cargar-nombres");// Botón para cargar nombres.txt
 const btnReset = document.getElementById("btn-reset");
-const inputArchivo = document.getElementById("input-archivo");
-const tpl = document.getElementById("tpl-persona");
+const inputArchivo = document.getElementById("input-archivo");// Input file para subir un archivo local
+const tpl = document.getElementById("tpl-persona");// Template HTML para una persona
 
 // --------- Utilidades ---------
+// Normaliza un nombre: elimina acentos/diacríticos y espacios extras
 function normalizaNombre(s) {
   return s.normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
 }
-
+// Crea un nodo HTML <.persona> a partir de un nombre y valor
 function renderPersona(nombre, valor = 10) {
-  const node = tpl.content.firstElementChild.cloneNode(true);
+  const node = tpl.content.firstElementChild.cloneNode(true);// clona el template
   node.dataset.nombre = nombre;
   node.querySelector(".nombre").textContent = nombre;
   const span = node.querySelector(".contador");
   span.textContent = valor;
   span.dataset.valor = String(valor);
+
+// --- Color inicial según valor ---
+  span.classList.remove("verde", "naranja", "rojo");
+  if (valor >= 8) {
+    span.classList.add("verde");
+  } else if (valor >= 5) {
+    span.classList.add("naranja");
+  } else {
+    span.classList.add("rojo");
+  }
+
   return node;
 }
 
@@ -104,19 +116,39 @@ lista.addEventListener("click", (ev) => {
   const span = card.querySelector(".contador");
   let valor = Number(span.dataset.valor || "10");
 
-  if (btn.classList.contains("btn-mas")) valor += 1;
-  if (btn.classList.contains("btn-menos")) valor -= 1;
+  if (btn.classList.contains("btn-mas")) valor +=.1;
+  if (btn.classList.contains("btn-menos")) valor -=.1;
+  
+  if(valor>10) valor =10;
+  if(valor<0) valor =0;
+
+  if(btn.classList.contains("btn-muerte")) valor=0;
 
   estado.set(nombre, valor);
   span.dataset.valor = String(valor);
-  span.textContent = valor;
+  //span.textContent = valor;
+  /**ChatGPT
+   * valor.toFixed(1) redondea a un solo decimal → "9.7".
+   * Number(...) lo convierte de nuevo a número → 9.7 (no string).**/
+  span.textContent = Number(valor.toFixed(1)); // siempre 1 decimal
   bump(span);
+
+  // --- Color dinámico según valor ---
+  span.classList.remove("verde", "naranja", "rojo");
+  if (valor >= 8) {
+    span.classList.add("verde");
+  } else if (valor >= 5) {
+    span.classList.add("naranja");
+  } else {
+    span.classList.add("rojo");
+  }
 });
 
 btnReset.addEventListener("click", () => {
   for (const n of estado.keys()) estado.set(n, 10);
   renderLista();
   setEstado("Todos los contadores han sido reiniciados a 10.");
+  
 });
 
 btnCargar.addEventListener("click", async () => {
@@ -126,6 +158,7 @@ btnCargar.addEventListener("click", async () => {
     console.error(err);
     setEstado("No se pudo cargar nombres.txt. Puedes subir un archivo local.");
   }
+
 });
 
 inputArchivo.addEventListener("change", async (e) => {
