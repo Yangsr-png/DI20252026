@@ -41,11 +41,11 @@ tarjetas.forEach((tarjeta) => {
   const spanValor = tarjeta.querySelector(".valor");
   const btnMas = tarjeta.querySelector(".btn-mas");
   const btnMenos = tarjeta.querySelector(".btn-menos");
-  const btnMuerte = tarjete.querySelector(".btn-muerte")
+  const btnMuerte = tarjeta.querySelector(".btn-muerte")
 
   btnMas.addEventListener("click", ()=>{
-  let valor = parseFloat(spanValor.textContent);
-  valor = valor +0.1;
+    let valor = parseFloat(spanValor.textContent);
+    valor = valor +0.1;
       if(valor>10){
       valor=10;
     }
@@ -61,7 +61,11 @@ tarjetas.forEach((tarjeta) => {
     spanValor.textContent = valor.toFixed(1);
   })
 
-  btnMuerte.addEventListener("click", ())
+  btnMuerte.addEventListener("click", ()=>{
+    let valor = parseFloat(spanValor.textContent);
+    valor = 0;
+  spanValor.textContent = valor.toFixed(1);
+  })
 
 
 });
