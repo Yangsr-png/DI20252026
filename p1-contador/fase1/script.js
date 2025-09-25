@@ -23,11 +23,11 @@ function actualizarContador() {
   spanContador.classList.remove("color-rojo", "color-amarillo", "color-verde");
 
   //Añadir color
-    if (contador <= 4) {
+  if (contador >= 0 && contador <= 4.9) {
     spanContador.classList.add("color-rojo");
-  } else if (contador === 5,6,7,8) {
+  } else if (contador >= 5 && contador <= 7.9) {
     spanContador.classList.add("color-amarillo");
-  } else if (contador >= 9) {
+  } else if (contador >= 8 && contador <= 10) {
     spanContador.classList.add("color-verde");
   }
 
