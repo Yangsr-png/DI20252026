@@ -104,12 +104,15 @@ lista.addEventListener("click", (ev) => {
   const span = card.querySelector(".contador");
   let valor = Number(span.dataset.valor || "10");
 
-  if (btn.classList.contains("btn-mas")) valor += 0.1;
-  if (btn.classList.contains("btn-menos")) valor -= 0.1;
+  if (btn.classList.contains("btn-mas")) valor = Math.min(10, valor + 0.1);
+  if (btn.classList.contains("btn-menos")) valor = Math.max(0.1, valor - 0.1);
+
+  // Redondea a un decimal
+  valor = Math.round(valor * 10) / 10;
 
   estado.set(nombre, valor);
   span.dataset.valor = String(valor);
-  span.textContent = valor;
+  span.textContent = valor.toFixed(1);
   bump(span);
 });
 
