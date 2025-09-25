@@ -6,6 +6,7 @@ const btnCargar = document.getElementById("btn-cargar-nombres");
 const btnReset = document.getElementById("btn-reset");
 const inputArchivo = document.getElementById("input-archivo");
 const tpl = document.getElementById("tpl-persona");
+const spanContador = document.getElementById("contador");
 
 // --------- Utilidades ---------
 function normalizaNombre(s) {
@@ -19,6 +20,7 @@ function renderPersona(nombre, valor = 10) {
   const span = node.querySelector(".contador");
   span.textContent = valor;
   span.dataset.valor = String(valor);
+  efectoColorDelContador(span, valor);
   return node;
 }
 
@@ -92,7 +94,19 @@ async function cargarDesdeArchivoLocal(file) {
 
 // --------- Interacción ---------
 // Delegación: un solo listener para todos los botones
+//color
+// Cambia el color del contador según su valor
+function efectoColorDelContador(span, valor) {
+  if (valor > 8) {
+    span.style.color = "green";
+  } else if (valor > 5) {
+    span.style.color = "orange";
+  } else {
+    span.style.color = "red";
+  }
+}
 lista.addEventListener("click", (ev) => {
+  
   const btn = ev.target.closest("button");
   if (!btn) return;
   const card = btn.closest(".persona");
@@ -107,11 +121,17 @@ lista.addEventListener("click", (ev) => {
   if (btn.classList.contains("btn-mas")) valor += 0.1;
   if (btn.classList.contains("btn-menos")) valor -= 0.1;
 
+  if (valor > 10) valor = 10;
+  if (valor < 0) valor = 0;
+  valor = Math.round(valor * 10) / 10;
+
   estado.set(nombre, valor);
   span.dataset.valor = String(valor);
   span.textContent = valor;
   bump(span);
+  efectoColorDelContador(span, valor);
 });
+
 
 btnReset.addEventListener("click", () => {
   for (const n of estado.keys()) estado.set(n, 10);
@@ -147,3 +167,5 @@ inputArchivo.addEventListener("change", async (e) => {
 cargarNombresDesdeTxt("nombres.txt").catch(() => {
   setEstado("Consejo: coloca un nombres.txt junto a esta página o usa 'Cargar archivo local'.");
 });
+
+
