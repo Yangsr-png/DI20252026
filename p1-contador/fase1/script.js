@@ -60,20 +60,39 @@ function efectoColorDelContador() {
 }
 
 // + button
-btnMas.addEventListener("click", () => {
+function plusButton()
+{
   contadores.forEach(contador => {
     if (contador.selected) {
       contador.contador = Math.min(contador.contador + getSteps(), 10);
       contador.contador = Math.round(contador.contador * 10) / 10; // round to 1 decimal
     }
   });
-  if(contador > 9.9) return;
-  contador += 0.1;
   actualizarContador();
+}
+
+btnMas.addEventListener("click", () => {
+  plusButton();
+});
+
+document.addEventListener("keydown", (event) =>
+{
+   switch(event.key) {
+    case "ArrowUp":
+    case "ArrowRight":
+      plusButton();
+      break;
+
+    case "ArrowDown":
+    case "ArrowLeft":
+      minusButton();
+      break;
+  }
 });
 
 // - button
-btnMenos.addEventListener("click", () => {
+function minusButton()
+{
   contadores.forEach(contador => {
     if (contador.selected) {
       contador.contador = Math.max(contador.contador - getSteps(), 0);
@@ -81,6 +100,10 @@ btnMenos.addEventListener("click", () => {
     }
   });
   actualizarContador();
+}
+
+btnMenos.addEventListener("click", () => {
+  minusButton();
 });
 
 // Boom button
@@ -106,9 +129,6 @@ btnBoom.addEventListener("click", () => {
       imgBoom.style.opacity = 0;
     }, 2000);
   }
-
-  if(contador < 0.1) return;
-  contador -= 0.1;
   actualizarContador();
 });
 
