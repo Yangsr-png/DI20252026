@@ -13,11 +13,11 @@ function actualizarContador() {
 }
 function efectoColorDelContador() {
   if(contador > 8) {
-    spanContador.style.color = "green";
+    spanContador.style.color = "red";
   } else if(contador > 5) {
     spanContador.style.color = "orange";
   } else if(contador > 3) {
-    spanContador.style.color = "red";
+    spanContador.style.color = "green";
   }
 
 }

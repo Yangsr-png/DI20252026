@@ -21,8 +21,8 @@ button {
     border: none;
 }
 #btn-menos {
-    background-color: #f00;
+    background-color: #0f0;
 }
 #btn-mas {
-    background-color: #0f0;
+    background-color:   #f00;
 }
