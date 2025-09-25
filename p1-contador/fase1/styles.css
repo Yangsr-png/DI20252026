@@ -1,0 +1,54 @@
+#alumno-container
+{
+    display: flex;
+    gap: 10px;
+}
+
+#alumno-container h2
+{
+    width: 100px;
+    height: 100px;
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    user-select: none; /* Make it so the user can't select the text, so when you double click, it wont highlight it */
+}
+
+#alumno-container span
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+#boton-container
+{
+    padding-top: 20px;
+}
+
+#botones
+{
+    user-select: none;
+}
+
+#input-container
+{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#img-boom   
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -9999;
+    opacity: 0;
+}
