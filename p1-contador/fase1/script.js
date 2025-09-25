@@ -2,6 +2,7 @@ const btnMas = document.getElementById("btn-mas");
 const btnMenos = document.getElementById("btn-menos");
 const btnBoom = document.getElementById("btn-boom");
 const btnDeselect = document.getElementById("btn-deselect");
+const btnRandom = document.getElementById("btn-random");
 const inputStep = document.getElementById("input-step");
 
 const imgBoom = document.getElementById("img-boom");
@@ -139,6 +140,19 @@ btnDeselect.addEventListener("click", () =>
     contador.selected = false;
     alumnos[index].style.border = "2px solid transparent";
   });
+});
+
+btnRandom.addEventListener("click", () =>
+{
+  contadores.forEach(contador =>
+  {
+    if (contador.selected)
+    {
+      contador.contador = Math.random() * (10 - 0.1) + 0.1;
+      contador.contador = Math.round(contador.contador * 10) / 10; // round to 1 decimal
+    }
+  });
+  actualizarContador();
 });
 
 function getSteps()
