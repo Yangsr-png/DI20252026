@@ -1,10 +1,12 @@
 // Estado simple en memoria: { nombre: valor }
+//estado es donde guardamos la informacion de casa persona, nombre y nota
 const estado = new Map();
 const lista = document.getElementById("lista");
 const estadoUI = document.getElementById("estado");
 const btnCargar = document.getElementById("btn-cargar-nombres");
 const btnReset = document.getElementById("btn-reset");
 const inputArchivo = document.getElementById("input-archivo");
+//plantilla HTML que sirve para crear la tarjeta de cada persona.
 const tpl = document.getElementById("tpl-persona");
 
 
@@ -14,6 +16,8 @@ function normalizaNombre(s) {
   return s.normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
 }
 
+//Crea la tarjeta de una persona
+// Copia el HTML del template, Pone el nombre, valor del contador, devuelve el elemento listo para insertarlo en la página.
 function renderPersona(nombre, valor = 10) {
   const node = tpl.content.firstElementChild.cloneNode(true);
   node.dataset.nombre = nombre;
@@ -23,7 +27,7 @@ function renderPersona(nombre, valor = 10) {
   span.dataset.valor = String(valor);
   return node;
 }
-
+//animación corta cuando cambia el número.
 function bump(el) {
   el.classList.add("bump");
   setTimeout(() => el.classList.remove("bump"), 160);
