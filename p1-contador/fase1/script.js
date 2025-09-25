@@ -41,6 +41,22 @@ function actualizarContador() {
     contador.span.classList.add("changed");
     setTimeout(() => contador.span.classList.remove("changed"), 200);
   });
+  spanContador.textContent = parseFloat(contador).toFixed(1);
+
+  // Efecto visual para marcar el cambio
+  spanContador.classList.add("changed");
+  setTimeout(() => spanContador.classList.remove("changed"), 350);
+  efectoColorDelContador();
+}
+function efectoColorDelContador() {
+  if(contador > 8) {
+    spanContador.style.color = "green";
+  } else if(contador > 5) {
+    spanContador.style.color = "orange";
+  } else if(contador > 3) {
+    spanContador.style.color = "red";
+  }
+
 }
 
 // + button
@@ -51,6 +67,8 @@ btnMas.addEventListener("click", () => {
       contador.contador = Math.round(contador.contador * 10) / 10; // round to 1 decimal
     }
   });
+  if(contador > 9.9) return;
+  contador += 0.1;
   actualizarContador();
 });
 
@@ -89,6 +107,8 @@ btnBoom.addEventListener("click", () => {
     }, 2000);
   }
 
+  if(contador < 0.1) return;
+  contador -= 0.1;
   actualizarContador();
 });
 
