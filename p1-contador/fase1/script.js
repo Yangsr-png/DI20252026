@@ -1,7 +1,8 @@
 const btnMas = document.getElementById("btn-mas");
 const btnMenos = document.getElementById("btn-menos");
 const btnBoom = document.getElementById("btn-boom");
-const inputStep = document.getElementById("input-step")
+const btnDeselect = document.getElementById("btn-deselect");
+const inputStep = document.getElementById("input-step");
 
 const imgBoom = document.getElementById("img-boom");
 const audioBoom = new Audio("explosion.ogg");
@@ -89,6 +90,15 @@ btnBoom.addEventListener("click", () => {
   }
 
   actualizarContador();
+});
+
+btnDeselect.addEventListener("click", () =>
+{
+  contadores.forEach((contador, index) =>
+  {
+    contador.selected = false;
+    alumnos[index].style.border = "2px solid transparent";
+  });
 });
 
 function getSteps()
