@@ -30,30 +30,36 @@ function crearTarjetaEstudiante(nombre) {
   spanContador.textContent = "10";
   card.appendChild(spanContador);
 
-  const botonesDiv = document.createElement("div"); // Contenedor de botones
-  botonesDiv.className = "botones";
 
-  // Botón -1
-  const btnMenos = document.createElement("button");
-  btnMenos.textContent = "-1";
-  botonesDiv.appendChild(btnMenos);
+  const botonesDiv = document.createElement("div");
+botonesDiv.className = "botones";
 
-  // Botón +1
-  const btnMas = document.createElement("button");
-  btnMas.textContent = "+1";
-  botonesDiv.appendChild(btnMas);
+// Botones negativos
+const grupoNegativo = document.createElement("div");
+grupoNegativo.className = "grupo-negativo";
+const btnMenos = document.createElement("button");
+btnMenos.textContent = "-1";
+const btnMenosDecimal = document.createElement("button");
+btnMenosDecimal.textContent = "-0.1";
+grupoNegativo.appendChild(btnMenos);
+grupoNegativo.appendChild(btnMenosDecimal);
 
-  // Botón -0.1
-  const btnMenosDecimal = document.createElement("button");
-  btnMenosDecimal.textContent = "-0.1";
-  botonesDiv.appendChild(btnMenosDecimal);
+// Botones positivos
+const grupoPositivo = document.createElement("div");
+grupoPositivo.className = "grupo-positivo";
+const btnMas = document.createElement("button");
+btnMas.textContent = "+1";
+const btnMasDecimal = document.createElement("button");
+btnMasDecimal.textContent = "+0.1";
+grupoPositivo.appendChild(btnMas);
+grupoPositivo.appendChild(btnMasDecimal);
 
-  // Botón +0.1
-  const btnMasDecimal = document.createElement("button");
-  btnMasDecimal.textContent = "+0.1";
-  botonesDiv.appendChild(btnMasDecimal);
+// Agrega los elementos al contenedor de botones en este orden:
+botonesDiv.appendChild(grupoNegativo);
+botonesDiv.appendChild(spanContador); // El número va en el centro
+botonesDiv.appendChild(grupoPositivo);
 
-  card.appendChild(botonesDiv);
+card.appendChild(botonesDiv);
 
   let contador = 10; // Valor inicial del contador
 
@@ -66,13 +72,14 @@ function crearTarjetaEstudiante(nombre) {
     // Quita clases anteriores de nivel
     card.classList.remove("nivel-bajo", "nivel-medio", "nivel-alto");
     // Asigna clase según el valor
-    if (contador <= 3) {
-      card.classList.add("nivel-bajo");
-    } else if (contador <= 7) {
-      card.classList.add("nivel-medio");
-    } else {
-      card.classList.add("nivel-alto");
-    }
+    // Cambia el color de fondo según el valor
+if (contador <= 3) {
+  card.style.background = '#ffeaea'; // rojo muy suave
+} else if (contador <= 7) {
+  card.style.background = '#fffbe6'; // amarillo muy suave
+} else {
+  card.style.background = '#eaffea'; // verde muy suave
+}
   }
 
 

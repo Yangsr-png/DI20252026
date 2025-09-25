@@ -1,32 +1,24 @@
 
 
-/* Tarjeta de cada estudiante */
-.student-card {
-	background: #fff;
-	border-radius: 10px;
-	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-	padding: 1.5em;
-	margin: 1em;
-	display: inline-block;
-	min-width: 200px;
-	text-align: center;
-}
+
 
 /* Estilo base de carta de solitario */
 .student-card {
   background: #fff;
-  border: 3px solid #222;
-  border-radius: 16px;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.18);
-  padding: 1.5em 1em;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 1.2em 1em;
   margin: 1em;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   min-width: 180px;
   max-width: 220px;
-  text-align: center;
-  font-family: 'Georgia', 'Times New Roman', serif;
   position: relative;
-  transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+  text-align: center;
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+  transition: background 0.3s;
 }
 
 /* Niveles visuales tipo póker */
@@ -35,31 +27,21 @@
   box-shadow: 0 0 16px #e74c3c55;
 }
 .nivel-medio {
-  border-color: #2980b9;
-  box-shadow: 0 0 16px #2980b955;
+  border-color: #e19c48;
+  box-shadow: 0 0 16px #a54c0c68;
 }
 .nivel-alto {
   border-color: #27ae60;
   box-shadow: 0 0 16px #27ae6055;
 }
 
-/* Opcional: icono de carta */
-.student-card::before {
-  content: \"🂠\";
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  font-size: 1.5em;
-  opacity: 0.2;
-}
 
 /* Detalles de carta */
 .student-card .contador {
-  font-size: 3em;
-  font-weight: bold;
-  margin: 0.5em 0;
-  color: #222;
-  font-family: 'Georgia', 'Times New Roman', serif;
+  margin: 0 1em;
+  min-width: 0.9em;
+  text-align: center;
+  font-size: 2.5em;
 }
 .student-card h2 {
   font-size: 1.1em;
@@ -68,19 +50,18 @@
   letter-spacing: 1px;
 }
 .btn-eliminar {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+  display: block;
+  margin: 0.5em auto 0 auto; /* Centrado y separado del contador */
+  position: static;          /* Quita el position: absolute si lo tenías */
   background: #e74c3c;
   color: white;
   border: none;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
   font-weight: bold;
   font-size: 1em;
-  z-index: 2;
 }
 
 
@@ -91,19 +72,30 @@
 }
 
 
-/* Valor del contador */
-.student-card .contador {
-	display: block;
-	font-size: 2.5em;
-	margin: 0.5em 0;
-}
+
 
 
 /* Botones de la tarjeta */
-.student-card .botones button {
-	margin: 0.2em;
-	padding: 0.5em 1em;
-	font-size: 1em;
+
+.student-card .botones {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  gap: 0.5em;
+}
+/* Agrupa los botones negativos y positivos en columna */
+.botones .grupo-negativo,
+.botones .grupo-positivo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.btn-eliminar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  /* ...resto de estilos... */
 }
 
 
@@ -115,14 +107,4 @@
 	gap: 1em;
 }
 
-.btn-eliminar {
-  float: right;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  font-weight: bold;
-}
+
