@@ -4,6 +4,7 @@ const lista = document.getElementById("lista");
 const estadoUI = document.getElementById("estado");
 const btnCargar = document.getElementById("btn-cargar-nombres");
 const btnReset = document.getElementById("btn-reset");
+const btnResetCero = document.getElementById("btn-reset-cero");
 const inputArchivo = document.getElementById("input-archivo");
 const tpl = document.getElementById("tpl-persona");
 
@@ -19,6 +20,16 @@ function renderPersona(nombre, valor = 10) {
   const span = node.querySelector(".contador");
   span.textContent = valor;
   span.dataset.valor = String(valor);
+  if (valor > 7.5) {
+    span.classList.remove("orange", "red")
+    span.classList.add("green")
+  } else if (valor > 2.5) {
+    span.classList.remove("green", "red")
+    span.classList.add("orange")
+  } else {
+    span.classList.remove("green", "orange")
+    span.classList.add("red")
+  }
   return node;
 }
 
@@ -104,14 +115,20 @@ lista.addEventListener("click", (ev) => {
   const span = card.querySelector(".contador");
   let valor = Number(span.dataset.valor || "10");
 
-  if (btn.classList.contains("btn-mas")) {
-    valor = Math.min(10, valor + 0.1);
+  if (btn.classList.contains("btn-mas") && (valor < 10)) valor += 1;
+  if (btn.classList.contains("btn-menos") && (valor > 0)) valor -= 1;
+
+  if (valor > 7.5) {
+    span.classList.remove("orange", "red")
+    span.classList.add("green")
+  } else if (valor > 2.5) {
+    span.classList.remove("green", "red")
+    span.classList.add("orange")
+  } else {
+    span.classList.remove("green", "orange")
+    span.classList.add("red")
   }
-  if (btn.classList.contains("btn-menos")) {
-    valor = valor - 0.1;
-  }
-  // Redondea a un decimal
-  valor = Number(valor.toFixed(1));
+
   estado.set(nombre, valor);
   span.dataset.valor = String(valor);
   span.textContent = valor;
@@ -123,6 +140,12 @@ btnReset.addEventListener("click", () => {
   renderLista();
   setEstado("Todos los contadores han sido reiniciados a 10.");
 });
+btnResetCero.addEventListener("click", () => {
+  for (const n of estado.keys()) estado.set(n, 0);
+  renderLista();
+  setEstado("Todos los contadores han sido reiniciados a 0.");
+});
+
 
 btnCargar.addEventListener("click", async () => {
   try {
