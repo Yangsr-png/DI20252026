@@ -165,23 +165,21 @@ async function cargarDesdeArchivoLocal(file) {
   setEstado(`Cargados ${nombres.length} nombres desde archivo local.`);
 }
 
-// --------- Interacción ---------
-// Delegación: un solo listener para todos los botones
-lista.addEventListener("click", (ev) => {
-  const btn = ev.target.closest("button");
-  if (!btn) return;
-  const card = btn.closest(".persona");
-  if (!card) return;
+// Variables para el sistema de mantener pulsado
+let intervalId = null;
+let timeoutId = null;
 
+// Función para actualizar contador individual
+function actualizarContador(card, accion) {
   const nombre = card.dataset.nombre;
   if (!estado.has(nombre)) return;
 
   const span = card.querySelector(".contador");
   let valor = Number(span.dataset.valor || "10");
 
-  if (btn.classList.contains("btn-mas")) valor += 0.1;
-  if (btn.classList.contains("btn-menos")) valor -= 0.1;
-  if (btn.classList.contains("btn-cero")) valor = 0;
+  if (accion === "mas") valor += 0.1;
+  if (accion === "menos") valor -= 0.1;
+  if (accion === "cero") valor = 0;
 
   // Aplicar límites: 0-10
   valor = Math.max(0, Math.min(10, valor));
@@ -199,6 +197,76 @@ lista.addEventListener("click", (ev) => {
   }
   
   bump(span);
+}
+
+// Función para iniciar el incremento/decremento continuo
+function iniciarAccionContinua(card, accion) {
+  // Limpiar cualquier intervalo previo
+  if (intervalId) clearInterval(intervalId);
+  if (timeoutId) clearTimeout(timeoutId);
+  
+  // Ejecutar la primera acción inmediatamente
+  actualizarContador(card, accion);
+  
+  // Si es la acción "cero", no necesita repetirse
+  if (accion === "cero") return;
+  
+  // Iniciar después de 500ms para evitar activación accidental
+  timeoutId = setTimeout(() => {
+    intervalId = setInterval(() => {
+      actualizarContador(card, accion);
+    }, 100); // Repetir cada 100ms
+  }, 500);
+}
+
+// Función para detener la acción continua
+function detenerAccionContinua() {
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+  }
+  if (timeoutId) {
+    clearTimeout(timeoutId);
+    timeoutId = null;
+  }
+}
+
+// --------- Interacción ---------
+// Delegación: mousedown para iniciar acción continua
+lista.addEventListener("mousedown", (ev) => {
+  const btn = ev.target.closest("button");
+  if (!btn) return;
+  const card = btn.closest(".persona");
+  if (!card) return;
+
+  ev.preventDefault(); // Prevenir selección de texto
+  
+  let accion = null;
+  if (btn.classList.contains("btn-mas")) accion = "mas";
+  if (btn.classList.contains("btn-menos")) accion = "menos";
+  if (btn.classList.contains("btn-cero")) accion = "cero";
+  
+  if (accion) {
+    iniciarAccionContinua(card, accion);
+  }
+});
+
+// Detener acción al soltar el botón
+lista.addEventListener("mouseup", detenerAccionContinua);
+lista.addEventListener("mouseleave", detenerAccionContinua);
+
+// También detener si el mouse sale del botón
+lista.addEventListener("mouseleave", (ev) => {
+  if (ev.target.closest("button")) {
+    detenerAccionContinua();
+  }
+});
+
+// Prevenir el menú contextual en los botones
+lista.addEventListener("contextmenu", (ev) => {
+  if (ev.target.closest("button")) {
+    ev.preventDefault();
+  }
 });
 
 btnReset.addEventListener("click", () => {
