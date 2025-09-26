@@ -1,4 +1,4 @@
-// Estado simple en memoria: { nombre: valor }
+git // Estado simple en memoria: { nombre: valor }
 const estado = new Map();
 const lista = document.getElementById("lista");
 const estadoUI = document.getElementById("estado");
