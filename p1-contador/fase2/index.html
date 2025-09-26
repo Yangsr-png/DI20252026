@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Contadores por Persona</title>
   <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
   <header class="topbar">
@@ -15,6 +16,7 @@
         Cargar archivo local
       </label>
       <button id="btn-reset">Reiniciar todos a 10</button>
+      <button id="btn-suspender-seleccionados">Suspender seleccionados</button>
     </div>
   </header>
 
@@ -29,9 +31,11 @@
         <h2 class="nombre"></h2>
       </header>
       <div class="contador-wrap">
+        <input type="checkbox" class="seleccion-suspenso" title="Seleccionar para suspender" />
         <button class="btn redondeado btn-menos" aria-label="Restar uno">−1</button>
         <span class="contador" data-valor="10" aria-live="polite">10</span>
         <button class="btn redondeado btn-mas" aria-label="Sumar uno">+1</button>
+        <button class="btn btn-muerte" aria-label="Suspender" title="Botón de la muerte">💀</button>
       </div>
     </article>
   </template>

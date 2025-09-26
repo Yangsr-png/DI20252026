@@ -17,9 +17,22 @@ function renderPersona(nombre, valor = 10) {
   node.dataset.nombre = nombre;
   node.querySelector(".nombre").textContent = nombre;
   const span = node.querySelector(".contador");
-  span.textContent = valor;
+  span.textContent = valor.toFixed(1);
   span.dataset.valor = String(valor);
+  setColor(span, valor); // <-- Añadido
   return node;
+}
+
+// Añade esta función para los colores
+function setColor(span, valor) {
+  span.classList.remove("rojo", "naranja", "verde");
+  if (valor <= 3) {
+    span.classList.add("rojo");
+  } else if (valor < 7) {
+    span.classList.add("naranja");
+  } else {
+    span.classList.add("verde");
+  }
 }
 
 function bump(el) {
@@ -104,12 +117,14 @@ lista.addEventListener("click", (ev) => {
   const span = card.querySelector(".contador");
   let valor = Number(span.dataset.valor || "10");
 
-  if (btn.classList.contains("btn-mas")) valor += 0.1;
-  if (btn.classList.contains("btn-menos")) valor -= 0.1;
+  if (btn.classList.contains("btn-mas")) valor = Math.min(10, +(valor + 0.1).toFixed(1));
+  if (btn.classList.contains("btn-menos")) valor = Math.max(0, +(valor - 0.1).toFixed(1));
+  if (btn.classList.contains("btn-muerte")) valor = 4; // Botón de la muerte
 
   estado.set(nombre, valor);
   span.dataset.valor = String(valor);
-  span.textContent = valor;
+  span.textContent = valor.toFixed(1);
+  setColor(span, valor);
   bump(span);
 });
 
@@ -139,6 +154,23 @@ inputArchivo.addEventListener("change", async (e) => {
   } finally {
     inputArchivo.value = "";
   }
+});
+
+const btnSuspenderSeleccionados = document.getElementById("btn-suspender-seleccionados");
+
+btnSuspenderSeleccionados.addEventListener("click", () => {
+  const seleccionados = lista.querySelectorAll(".seleccion-suspenso:checked");
+  let count = 0;
+  seleccionados.forEach(checkbox => {
+    const card = checkbox.closest(".persona");
+    const nombre = card.dataset.nombre;
+    if (estado.has(nombre)) {
+      estado.set(nombre, 4);
+      count++;
+    }
+  });
+  renderLista();
+  setEstado(count > 0 ? `Suspendidos ${count} alumnos seleccionados.` : "No hay alumnos seleccionados.");
 });
 
 // --------- Bootstrap ---------
