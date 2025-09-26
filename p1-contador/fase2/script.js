@@ -10,6 +10,7 @@ const tpl = document.getElementById("tpl-persona");
 // Elementos para selección múltiple
 const controlesSeleccion = document.getElementById("controles-seleccion");
 const contadorSeleccionados = document.getElementById("contador-seleccionados");
+const btnSeleccionarTodos = document.getElementById("btn-seleccionar-todos");
 const btnSeleccionadosCero = document.getElementById("btn-seleccionados-cero");
 const btnSeleccionadosMas = document.getElementById("btn-seleccionados-mas");
 const btnSeleccionadosMenos = document.getElementById("btn-seleccionados-menos");
@@ -73,6 +74,12 @@ function actualizarControlesSeleccion() {
   } else {
     controlesSeleccion.style.display = 'none';
   }
+}
+
+function seleccionarTodosAlumnos() {
+  const checkboxes = document.querySelectorAll('.selector-alumno');
+  checkboxes.forEach(cb => cb.checked = true);
+  actualizarControlesSeleccion();
 }
 
 function aplicarAccionASeleccionados(accion) {
@@ -395,6 +402,11 @@ btnSeleccionadosReset.addEventListener("mousedown", (ev) => {
 // Prevenir menú contextual en botones de selección
 [btnSeleccionadosCero, btnSeleccionadosMas, btnSeleccionadosMenos, btnSeleccionadosReset].forEach(btn => {
   btn.addEventListener("contextmenu", (ev) => ev.preventDefault());
+});
+
+btnSeleccionarTodos.addEventListener("click", () => {
+  seleccionarTodosAlumnos();
+  setEstado("Todos los alumnos seleccionados.");
 });
 
 btnDeseleccionar.addEventListener("click", () => {
