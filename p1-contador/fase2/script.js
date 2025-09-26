@@ -168,6 +168,8 @@ async function cargarDesdeArchivoLocal(file) {
 // Variables para el sistema de mantener pulsado
 let intervalId = null;
 let timeoutId = null;
+let intervalIdSeleccionados = null;
+let timeoutIdSeleccionados = null;
 
 // Función para actualizar contador individual
 function actualizarContador(card, accion) {
@@ -228,6 +230,38 @@ function detenerAccionContinua() {
   if (timeoutId) {
     clearTimeout(timeoutId);
     timeoutId = null;
+  }
+}
+
+// Función para aplicar acción continua a seleccionados
+function iniciarAccionContinuaSeleccionados(accion) {
+  // Limpiar cualquier intervalo previo
+  if (intervalIdSeleccionados) clearInterval(intervalIdSeleccionados);
+  if (timeoutIdSeleccionados) clearTimeout(timeoutIdSeleccionados);
+  
+  // Ejecutar la primera acción inmediatamente
+  aplicarAccionASeleccionados(accion);
+  
+  // Si es la acción "cero" o "reset", no necesita repetirse
+  if (accion === "cero" || accion === "reset") return;
+  
+  // Iniciar después de 500ms para evitar activación accidental
+  timeoutIdSeleccionados = setTimeout(() => {
+    intervalIdSeleccionados = setInterval(() => {
+      aplicarAccionASeleccionados(accion);
+    }, 100); // Repetir cada 100ms
+  }, 500);
+}
+
+// Función para detener la acción continua de seleccionados
+function detenerAccionContinuaSeleccionados() {
+  if (intervalIdSeleccionados) {
+    clearInterval(intervalIdSeleccionados);
+    intervalIdSeleccionados = null;
+  }
+  if (timeoutIdSeleccionados) {
+    clearTimeout(timeoutIdSeleccionados);
+    timeoutIdSeleccionados = null;
   }
 }
 
@@ -322,6 +356,42 @@ btnSeleccionadosMenos.addEventListener("click", () => {
 btnSeleccionadosReset.addEventListener("click", () => {
   aplicarAccionASeleccionados('reset');
   setEstado("Contadores seleccionados reiniciados a 10.");
+});
+
+// Event listeners para selección múltiple con hold-down
+btnSeleccionadosCero.addEventListener("mousedown", (ev) => {
+  ev.preventDefault();
+  aplicarAccionASeleccionados('cero');
+  setEstado("Contadores seleccionados puestos en 0.");
+});
+
+btnSeleccionadosMas.addEventListener("mousedown", (ev) => {
+  ev.preventDefault();
+  iniciarAccionContinuaSeleccionados('mas');
+  setEstado("Sumando 0.1 a los contadores seleccionados...");
+});
+
+btnSeleccionadosMenos.addEventListener("mousedown", (ev) => {
+  ev.preventDefault();
+  iniciarAccionContinuaSeleccionados('menos');
+  setEstado("Restando 0.1 a los contadores seleccionados...");
+});
+
+btnSeleccionadosReset.addEventListener("mousedown", (ev) => {
+  ev.preventDefault();
+  aplicarAccionASeleccionados('reset');
+  setEstado("Contadores seleccionados reiniciados a 10.");
+});
+
+// Detener acciones continuas en botones de selección múltiple
+[btnSeleccionadosMas, btnSeleccionadosMenos].forEach(btn => {
+  btn.addEventListener("mouseup", detenerAccionContinuaSeleccionados);
+  btn.addEventListener("mouseleave", detenerAccionContinuaSeleccionados);
+});
+
+// Prevenir menú contextual en botones de selección
+[btnSeleccionadosCero, btnSeleccionadosMas, btnSeleccionadosMenos, btnSeleccionadosReset].forEach(btn => {
+  btn.addEventListener("contextmenu", (ev) => ev.preventDefault());
 });
 
 btnDeseleccionar.addEventListener("click", () => {
