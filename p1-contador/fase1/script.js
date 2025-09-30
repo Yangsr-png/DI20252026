@@ -121,8 +121,6 @@ btnReset.addEventListener("click", () => {
 });
 
 
-// Indicar de cuanto en cuanto se va a incrementar o decrementar
-
 //Cambiar los botones
 function actualizarBotonesPaso() {
   btnMas.textContent = `+${paso}`;
