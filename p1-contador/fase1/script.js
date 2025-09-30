@@ -9,6 +9,7 @@ const btnMuerte = document.getElementById("btn-muerte");
 const btnMagico = document.getElementById("btn-magico");
 
 function actualizarContador() {
+
   // toFixed(1) obliga a redondear y formatear el número a un solo decimal
   spanContador.textContent = contador.toFixed(1);
   console.log("mensaje");// Mensaje de depuración en la consola
@@ -28,6 +29,7 @@ function actualizarContador() {
   spanContador.classList.add("changed");
    // Después de 200ms se quita la clase para que pueda repetirse el efecto
   setTimeout(() => spanContador.classList.remove("changed"), 200);
+
 }
 
 btnRedondeadoMas.addEventListener("click", () => {
@@ -37,6 +39,7 @@ btnRedondeadoMas.addEventListener("click", () => {
 });
 
 btnMas.addEventListener("click", () => {
+
   contador+=1;
   if(contador>10) contador=10;
   actualizarContador();
@@ -45,10 +48,12 @@ btnMas.addEventListener("click", () => {
 btnRedondeadoMenos.addEventListener("click", () => {
   contador-=0.1;
   if(contador<0) contador=0;
+
   actualizarContador();
 });
 
 btnMenos.addEventListener("click", () => {
+
   contador-=1;
   if(contador<0) contador=0;
   actualizarContador();
@@ -61,6 +66,7 @@ btnMuerte.addEventListener("click", () => {
 
 btnMagico.addEventListener("click", () => {
   contador= Number((Math.random()*10).toFixed(1));
+
   actualizarContador();
 });
 

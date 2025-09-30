@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Contadores por Persona</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <title>Contadores por Persona</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
+<section id="estado" aria-live="polite"></section>
+    <section id="lista" class="grid"></section>
+    
+    <section class="ranking-section">
+        <h2>Clasificación (Puntuación Máxima)</h2>
+        <ol id="ranking-lista"></ol>
 <body>
+
   <!-- Barra superior con título y botones de acciones -->
   <header class="topbar">
     <h1>Contadores de Clase</h1>
@@ -63,6 +70,6 @@
     </article>
   </template>
 
-  <script src="script.js" type="module"></script>
+  <script src="script.js" type="module"></script>
 </body>
 </html>
