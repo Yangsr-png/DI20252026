@@ -150,3 +150,43 @@ inputArchivo.addEventListener("change", async (e) => {
 cargarNombresDesdeTxt("nombres.txt").catch(() => {
   setEstado("Consejo: coloca un nombres.txt junto a esta página o usa 'Cargar archivo local'.");
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btnAgregar = document.getElementById("btn-agregar");
+
+  // 👉 función para guardar el archivo actualizado
+  function guardarArchivoTxt() {
+    const nombres = Array.from(estado.keys());
+    const contenido = nombres.join("\n");
+    const blob = new Blob([contenido], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "nombres.txt";
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  function agregarPersona(nombre) {
+    if (!nombre || !nombre.trim()) return; // no hacer nada si está vacío
+
+    nombre = nombre.trim();
+
+    if (!estado.has(nombre)) {
+      estado.set(nombre, 10); // valor inicial
+      renderLista(); // usa tu función ya hecha
+      setEstado(`Añadido ${nombre}.`);
+
+      guardarArchivoTxt();
+    } else {
+      setEstado(`${nombre} ya existe.`);
+    }
+  }
+
+  btnAgregar.addEventListener("click", () => {
+    const nombre = prompt("Introduce el nombre de la persona:");
+    agregarPersona(nombre);
+  });
+});
