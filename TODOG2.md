@@ -4,3 +4,5 @@
 4.- INput
 5.- Listado
 6.- Elección de nota
+7.-Operativa - Menú inferior
+8.- Modo oscuro / Modo claro (variable)
