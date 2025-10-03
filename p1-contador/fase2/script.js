@@ -170,16 +170,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function agregarPersona(nombre) {
-    if (!nombre || !nombre.trim()) return; // no hacer nada si está vacío
+    if (!nombre || !nombre.trim()) return; 
 
     nombre = nombre.trim();
 
     if (!estado.has(nombre)) {
-      estado.set(nombre, 10); // valor inicial
-      renderLista(); // usa tu función ya hecha
+      estado.set(nombre, 10); 
+      renderLista(); 
       setEstado(`Añadido ${nombre}.`);
-
-      guardarArchivoTxt();
     } else {
       setEstado(`${nombre} ya existe.`);
     }
