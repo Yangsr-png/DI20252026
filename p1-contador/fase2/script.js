@@ -19,6 +19,13 @@ function renderPersona(nombre, valor = 10) {
   const span = node.querySelector(".contador");
   span.textContent = valor;
   span.dataset.valor = String(valor);
+  
+  // Color inicial según valor
+  span.classList.remove("verde", "verdeSuave","naranja", "rojo");
+  if (valor >= 9) { span.classList.add("verde");} 
+  else if(valor >= 7){ span.classList.add("verdeSuave");} 
+  else if (valor >= 5) { span.classList.add("naranja");} 
+  else { span.classList.add("rojo");}
   return node;
 }
 
@@ -48,7 +55,7 @@ function setEstado(msg) {
 async function cargarNombresDesdeTxt(url = "nombres.txt") {
   setEstado("Cargando nombres…");
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`No se pudo leer ${url}`);
+  if (!res.ok) throw new Error('No se pudo leer ${url}');
   const text = await res.text();
 
   // Permite .txt (una por línea) o .json (array de strings)
@@ -67,7 +74,7 @@ async function cargarNombresDesdeTxt(url = "nombres.txt") {
     if (!estado.has(n)) estado.set(n, 10);
   }
   renderLista();
-  setEstado(`Cargados ${nombres.length} nombres.`);
+  setEstado('Cargados ${nombres.length} nombres.');
 }
 
 // Carga desde archivo local (input file)
@@ -87,7 +94,7 @@ async function cargarDesdeArchivoLocal(file) {
     if (!estado.has(n)) estado.set(n, 10);
   }
   renderLista();
-  setEstado(`Cargados ${nombres.length} nombres desde archivo local.`);
+  setEstado('Cargados ${nombres.length} nombres desde archivo local.');
 }
 
 // --------- Interacción ---------
@@ -106,6 +113,13 @@ lista.addEventListener("click", (ev) => {
 
   if (btn.classList.contains("btn-mas")) valor += 1;
   if (btn.classList.contains("btn-menos")) valor -= 1;
+
+  // Reaplica color dinámico según valor
+  span.classList.remove("verde", "verdeSuave","naranja", "rojo");
+  if (valor >= 9) { span.classList.add("verde"); } 
+  else if(valor >= 7){ span.classList.add("verdeSuave");} 
+  else if (valor >= 5) { span.classList.add("naranja"); } 
+  else { span.classList.add("rojo"); }
 
   estado.set(nombre, valor);
   span.dataset.valor = String(valor);
@@ -145,5 +159,13 @@ inputArchivo.addEventListener("change", async (e) => {
 // Opción A (recomendada en local con live server): intenta cargar nombres.txt
 // Opción B: si falla, el usuario puede usar “Cargar archivo local”
 cargarNombresDesdeTxt("nombres.txt").catch(() => {
-  setEstado("Consejo: coloca un nombres.txt junto a esta página o usa 'Cargar archivo local'.");
+  setEstado("Consejo: coloca un nombres.txt junto a esta página o usa 'Cargar archivo local'.");
 });
+
+// BOTON MUERTE
+
+function muerte() {
+  for (const n of estado.keys()) estado.set(n, 0);
+  renderLista();
+}
+//Y ya estaria

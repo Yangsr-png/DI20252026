@@ -1,7 +1,9 @@
-let contador = 10;
+let contador = 10; // Variable que guarda el valor actual del contador
+// Referencias a los elementos del DOM
 const spanContador = document.getElementById("contador");
 const btnMas = document.getElementById("btn-mas");
 const btnMenos = document.getElementById("btn-menos");
+
 const btnMasdec = document.getElementById("btn-masdec");
 const btnMenosdec = document.getElementById("btn-menosdec");
 const btnReset = document.getElementById("btn-reset");
@@ -12,9 +14,12 @@ function actualizarContador() {
   // Mostrar sin decimales si es entero, con un decimal si no lo es
   spanContador.textContent = (contador % 1 === 0) ? contador.toFixed(0) : contador.toFixed(1);
   console.log("mensaje");
+
   // Efecto visual para marcar el cambio
   spanContador.classList.add("changed");
+   // Después de 200ms se quita la clase para que pueda repetirse el efecto
   setTimeout(() => spanContador.classList.remove("changed"), 200);
+
   actualizarBotones();
 
   // Cambiar color del contador
@@ -40,6 +45,7 @@ btnMas.addEventListener("click", () => {
   if (contador > 10) {
     contador = 10;
   }
+
   actualizarContador();
 });
 
@@ -48,6 +54,7 @@ btnMenos.addEventListener("click", () => {
   if (contador < 0) {
     contador = 0;
   }
+
   actualizarContador();
 });
 
@@ -103,6 +110,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 // Inicialización
+//Llamada inicial para mostrar el contador en pantalla al cargar
 actualizarContador();
 
 //Desactivar botones
