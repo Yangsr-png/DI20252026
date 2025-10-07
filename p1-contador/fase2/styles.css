@@ -25,7 +25,7 @@ body{
 button, .file-label{
   border:1px solid var(--border); background:#fff; color:var(--text);
   padding:.5rem .75rem; border-radius:.65rem; cursor:pointer;
-  transition: transform .06s ease, background .2s ease, box-shadow .2s ease;
+  transition: transform .06s ease, var(--bg) .2s ease, box-shadow .2s ease;
 }
 button:hover, .file-label:hover{ background:var(--accent-weak); }
 button:active, .file-label:active{ transform: translateY(1px); }
@@ -67,6 +67,12 @@ main{ padding:1rem; max-width:1100px; margin:0 auto; }
 
 .persona{ user-select:none; }
 
+
+.contador.verde{ color:green; }
+.contador.verdeSuave{ color:greenyellow; }
+.contador.naranja{ color:orange;}
+.contador.rojo{ color:red;}
+=======
 #btn-reset-5 { border-color: #fca; }
 #btn-reset-0 { border-color: #f99; }
 #btn-reset { border-color: #65f665; }
