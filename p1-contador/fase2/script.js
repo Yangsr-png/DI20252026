@@ -6,6 +6,11 @@ const btnCargar = document.getElementById("btn-cargar-nombres");
 const btnReset = document.getElementById("btn-reset");
 const inputArchivo = document.getElementById("input-archivo");
 const tpl = document.getElementById("tpl-persona");
+const btnReset5 = document.getElementById("btn-reset-5");
+const btnReset0 = document.getElementById("btn-reset-0");
+const btnMas = document.getElementById("btn-mas-global");
+const btnMenos = document.getElementById("btn-menos-global");
+
 
 // --------- Utilidades ---------
 function normalizaNombre(s) {
@@ -101,18 +106,20 @@ async function cargarDesdeArchivoLocal(file) {
 // Delegación: un solo listener para todos los botones
 lista.addEventListener("click", (ev) => {
   const btn = ev.target.closest("button");
-  if (!btn) return;
-  const card = btn.closest(".persona");
-  if (!card) return;
+  const card = ev.target.closest(".persona");
 
-  const nombre = card.dataset.nombre;
-  if (!estado.has(nombre)) return;
 
-  const span = card.querySelector(".contador");
-  let valor = Number(span.dataset.valor || "10");
+  // Si es un botón (+/-/reset individual)
+  if (btn && card) {
+    const nombre = card.dataset.nombre;
+    if (!estado.has(nombre)) return;
+    const span = card.querySelector(".contador");
+    let valor = Number(span.dataset.valor || "10");
 
-  if (btn.classList.contains("btn-mas")) valor += 1;
-  if (btn.classList.contains("btn-menos")) valor -= 1;
+    if (btn.classList.contains("btn-mas")) valor += 0.1;
+    if (btn.classList.contains("btn-menos")) valor -= 0.1;
+    if (btn.classList.contains("btn-reset-individual")) valor = 10;
+
 
   // Reaplica color dinámico según valor
   span.classList.remove("verde", "verdeSuave","naranja", "rojo");
@@ -125,12 +132,47 @@ lista.addEventListener("click", (ev) => {
   span.dataset.valor = String(valor);
   span.textContent = valor;
   bump(span);
+=======
+    valor = Math.min(10, Math.max(0, parseFloat(valor.toFixed(1))));
+
+    estado.set(nombre, valor);
+    span.dataset.valor = String(valor);
+    span.textContent = valor.toFixed(1);
+    actualizarColor(span, valor);
+    bump(span);
+    return; // ya procesado, no sigue al siguiente bloque
+  }
+
+  // Si no es un botón, manejamos la selección
+  if (card) {
+    if (ev.ctrlKey || ev.metaKey) {
+      card.classList.toggle("seleccionada");
+    } else {
+      document.querySelectorAll(".persona.seleccionada").forEach(c => c.classList.remove("seleccionada"));
+      card.classList.add("seleccionada");
+    }
+    actualizarBotonesSeleccion();
+  }
+
 });
+
 
 btnReset.addEventListener("click", () => {
   for (const n of estado.keys()) estado.set(n, 10);
   renderLista();
   setEstado("Todos los contadores han sido reiniciados a 10.");
+});
+
+btnReset5.addEventListener("click", () => {
+  for (const n of estado.keys()) estado.set(n, 5);
+  renderLista();
+  setEstado("Todos los contadores han sido reiniciados a 5.");
+});
+
+btnReset0.addEventListener("click", () => {
+  for (const n of estado.keys()) estado.set(n, 0);
+  renderLista();
+  setEstado("Todos los contadores han sido reiniciados a 0.");
 });
 
 btnCargar.addEventListener("click", async () => {
@@ -162,6 +204,7 @@ cargarNombresDesdeTxt("nombres.txt").catch(() => {
   setEstado("Consejo: coloca un nombres.txt junto a esta página o usa 'Cargar archivo local'.");
 });
 
+
 // BOTON MUERTE
 
 function muerte() {
@@ -169,3 +212,4 @@ function muerte() {
   renderLista();
 }
 //Y ya estaria
+

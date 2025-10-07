@@ -15,6 +15,30 @@ function actualizarContador() {
   spanContador.textContent = (contador % 1 === 0) ? contador.toFixed(0) : contador.toFixed(1);
   console.log("mensaje");
 
+
+const btnRedondeadoMenos = document.getElementById("btn-redondeado-menos");
+const btnRedondeadoMas = document.getElementById("btn-redondeado-mas");
+const btnMuerte = document.getElementById("btn-muerte");
+const btnMagico = document.getElementById("btn-magico");
+
+function actualizarContador() {
+
+  // toFixed(1) obliga a redondear y formatear el número a un solo decimal
+  spanContador.textContent = contador.toFixed(1);
+  console.log("mensaje");// Mensaje de depuración en la consola
+
+  // Cambiar color según rango
+  if (contador >= 9) {
+    spanContador.style.color = "green";
+  } else if (contador >=7) {
+    spanContador.style.color = "greenyellow";
+  } else if (contador === 6){
+    spanContador.style.color = "yellow";
+  } else if(contador === 5){
+    spanContador.style.color = "orange";
+  } else{spanContador.style.color="red";}
+
+
   // Efecto visual para marcar el cambio
   spanContador.classList.add("changed");
    // Después de 200ms se quita la clase para que pueda repetirse el efecto
@@ -46,14 +70,53 @@ btnMas.addEventListener("click", () => {
     contador = 10;
   }
 
+
+
+}
+
+btnRedondeadoMas.addEventListener("click", () => {
+  contador+=0.1;
+  if(contador>10) contador=10;
+  actualizarContador();
+});
+
+btnMas.addEventListener("click", () => {
+
+  contador+=1;
+  if(contador>10) contador=10;
+  actualizarContador();
+});
+
+btnRedondeadoMenos.addEventListener("click", () => {
+  contador-=0.1;
+  if(contador<0) contador=0;
+
+
   actualizarContador();
 });
 
 btnMenos.addEventListener("click", () => {
+
   contador = +(contador - paso).toFixed(1);
   if (contador < 0) {
     contador = 0;
   }
+
+
+
+  contador-=1;
+  if(contador<0) contador=0;
+  actualizarContador();
+});
+
+btnMuerte.addEventListener("click", () => {
+  contador = 0;
+  actualizarContador();
+});
+
+btnMagico.addEventListener("click", () => {
+  contador= Number((Math.random()*10).toFixed(1));
+
 
   actualizarContador();
 });

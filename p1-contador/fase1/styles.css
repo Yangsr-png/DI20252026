@@ -174,4 +174,35 @@ input.personaliza-paso:focus {
   background: #2cff24;
   box-shadow: 0 2px 8px rgba(33,145,80,0.13);
 
+
+=======
+=======
+body {
+    text-align: center;
+    font-family: sans-serif;
+}
+#contador {
+    font-size: 1.5rem;
+}
+#contador.changed {
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+.botones {
+    padding: 20px;
+}
+
+button {
+    width: 50px;
+    height: 30px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+}
+#btn-menos {
+    background-color: #f00;
+}
+#btn-mas {
+    background-color: #0f0;
+
 }
