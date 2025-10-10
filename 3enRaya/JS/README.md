@@ -1,0 +1,351 @@
+Para practicar DOM, eventos, arrays, estados y “victory checks”.
+
+# Acertijo: “Rompecabezas con código oculto”
+
+**Objetivo:** Reordenar un rompecabezas 3×3. **Solo cuando esté resuelto aparecerá un código de 4 dígitos** escondido en la composición visual. Ese código hay que introducirlo para “desbloquear” el ejercicio.
+
+## Competencias que entrenan
+
+* Manipulación del DOM y eventos (`click`, `keydown` opcional).
+* Modelado de estado con arrays (permutaciones) y comprobación de victoria.
+* Estilos dinámicos con variables CSS y `classList`.
+* UX básica: contador de movimientos y feedback.
+
+---
+
+## Enunciado 
+
+1. Tienes un tablero 3×3 de fichas desordenadas.
+2. **Acción**: al hacer clic en dos fichas, se intercambian.
+3. **Meta**: cuando las fichas queden en su posición correcta, el patrón geométrico se alineará y aparecerá un **código de 4 dígitos** sobre cuatro fichas.
+4. Introduce el código en el campo inferior para completar el reto.
+
+---
+
+## Starter (HTML+CSS+JS en un único archivo)
+
+Copia y pega esto en un `index.html` y ábrelo en el navegador:
+
+```html
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Rompecabezas con acertijo visual</title>
+<style>
+  :root{
+    --size: 420px;          /* tamaño del tablero */
+    --gap: 6px;             /* separación entre fichas */
+    --cells: 3;             /* 3x3 */
+  }
+
+  body{
+    font-family: system-ui, sans-serif;
+    display: grid;
+    place-items: center;
+    min-height: 100dvh;
+    margin: 0;
+    background: radial-gradient(circle at 20% 10%, #f6f9ff, #ebf1ff 35%, #e7ecff 60%, #e3e9ff);
+  }
+
+  .wrap{
+    width: min(92vw, 780px);
+    display: grid;
+    gap: 20px;
+    justify-items: center;
+  }
+
+  h1{ font-size: clamp(1.2rem, 2.4vw, 1.8rem); margin: 0; }
+
+  .board{
+    width: var(--size);
+    height: var(--size);
+    display: grid;
+    grid-template-columns: repeat(var(--cells), 1fr);
+    grid-template-rows: repeat(var(--cells), 1fr);
+    gap: var(--gap);
+    position: relative;
+    /* Fondo “imagen” generativo: alinear piezas = patrón se ve continuo */
+    background:
+      conic-gradient(from 45deg,
+        #6b8cff 0 25%, #b3c2ff 0 50%, #6b8cff 0 75%, #b3c2ff 0 100%);
+    border-radius: 16px;
+    padding: var(--gap);
+    box-shadow: 0 20px 40px rgba(30,50,100,.15);
+  }
+
+  .tile{
+    position: relative;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    outline: 2px solid transparent;
+    transition: transform .12s ease;
+    background:
+      /* textura de “pintura” para que se note el desorden */
+      repeating-conic-gradient(from 0deg at 50% 50%,
+        rgba(255,255,255,.12) 0 10deg, rgba(255,255,255,0) 10deg 20deg),
+      /* recorte de la “imagen” grande del tablero */
+      conic-gradient(from 45deg,
+        #6b8cff 0 25%, #b3c2ff 0 50%, #6b8cff 0 75%, #b3c2ff 0 100%);
+    /* Cada ficha siempre “mira” a su coordenada correcta del fondo */
+    background-size: calc(var(--size) - 2*var(--gap)) calc(var(--size) - 2*var(--gap));
+    background-position:
+      calc(var(--x) * (100% / (var(--cells) - 1)))
+      calc(var(--y) * (100% / (var(--cells) - 1)));
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,.35), 0 10px 18px rgba(30,50,100,.12);
+  }
+
+  .tile:active{ transform: scale(.98); }
+
+  .tile.selected{ outline: 2px solid #1e2cff; }
+
+  /* Números del acertijo: solo aparecen si está resuelto */
+  .tile::after{
+    content: attr(data-digit);
+    position: absolute;
+    inset: auto 8px 8px auto;
+    font-weight: 800;
+    font-size: clamp(16px, 3.8vw, 28px);
+    letter-spacing: .02em;
+    color: #0b0e2a;
+    background: rgba(255,255,255,.75);
+    border-radius: 8px;
+    padding: 4px 8px;
+    opacity: 0;            /* ocultos por defecto */
+    transform: translateY(4px);
+    transition: opacity .25s ease, transform .25s ease;
+  }
+
+  .board.solved .tile[data-digit]::after{
+    opacity: 1;            /* aparecen al resolver */
+    transform: translateY(0);
+  }
+
+  .hud{
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn{
+    background: #1e2cff;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn.secondary{
+    background: #e7ebff;
+    color: #1e2cff;
+  }
+
+  input[type="text"]{
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 2px solid #cdd6ff;
+    width: 160px;
+    font-size: 16px;
+  }
+
+  .msg{ min-height: 1.4em; font-weight: 600; }
+  .ok{ color: #0a8a3a; }
+  .ko{ color: #9b1c1c; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Rompecabezas 3×3 — Descubre el código oculto</h1>
+
+    <div id="board" class="board" aria-label="Tablero rompecabezas"></div>
+
+    <div class="hud">
+      <button id="shuffleBtn" class="btn">Barajar</button>
+      <button id="cheatBtn" class="btn secondary" title="Colocar piezas en orden (para demo)">Auto-resolver</button>
+      <span>Movimientos: <strong id="moves">0</strong></span>
+    </div>
+
+    <div class="hud">
+      <input id="codeInput" type="text" maxlength="4" placeholder="Introduce el código" />
+      <button id="checkBtn" class="btn">Comprobar</button>
+    </div>
+
+    <div id="message" class="msg" role="status" aria-live="polite"></div>
+  </div>
+
+<script>
+(function(){
+  const CELLS = 3;             // 3x3
+  const N = CELLS * CELLS;     // 9 piezas
+  const board = document.getElementById('board');
+  const movesEl = document.getElementById('moves');
+  const msgEl = document.getElementById('message');
+
+  // Código oculto que se mostrará solo al resolver:
+  // Aparece como data-digit en cuatro piezas concretas (índices por diseño)
+  const SECRET_CODE = "4273";
+  const DIGIT_POSITIONS = { 1:"4", 3:"2", 5:"7", 7:"3" }; // leyendo en sentido horario
+
+  // Estado: permutación de índices [0..8] indicando qué ficha ocupa cada posición del tablero
+  let perm = [...Array(N).keys()];
+  let selected = null;
+  let moves = 0;
+
+  // Crear fichas
+  function setup(){
+    board.innerHTML = '';
+    board.style.setProperty('--cells', CELLS);
+
+    for(let i=0;i<N;i++){
+      const tile = document.createElement('button');
+      tile.className = 'tile';
+      tile.type = 'button';
+      tile.dataset.index = i;           // índice “correcto” de la ficha
+      tile.style.setProperty('--x', i % CELLS);
+      tile.style.setProperty('--y', Math.floor(i / CELLS));
+
+      // Etiquetamos cuatro fichas con los dígitos que aparecerán al resolver
+      if(DIGIT_POSITIONS[i] !== undefined){
+        tile.setAttribute('data-digit', DIGIT_POSITIONS[i]);
+        tile.setAttribute('aria-label', 'Ficha con dígito oculto');
+      }
+
+      tile.addEventListener('click', () => onSelect(tile));
+      board.appendChild(tile);
+    }
+    shuffle();
+  }
+
+  // Barajar con Fisher-Yates hasta que sea resoluble (paridad par)
+  function shuffle(){
+    perm = [...Array(N).keys()];
+    for(let i=N-1; i>0; i--){
+      const j = Math.floor(Math.random() * (i+1));
+      [perm[i], perm[j]] = [perm[j], perm[i]];
+    }
+    // Asegurar paridad (para swaps por pares)
+    if(inversions(perm) % 2 === 1){
+      // intercambia dos elementos no iguales
+      [perm[0], perm[1]] = [perm[1], perm[0]];
+    }
+    applyPositions();
+    board.classList.remove('solved');
+    selected = null;
+    moves = 0; updateMoves();
+    setMsg('Barajado. Intercambia dos fichas para ordenarlas.', '');
+  }
+
+  function inversions(arr){
+    let inv = 0;
+    for(let i=0;i<arr.length;i++)
+      for(let j=i+1;j<arr.length;j++)
+        if(arr[i] > arr[j]) inv++;
+    return inv;
+  }
+
+  function applyPositions(){
+    // Coloca las fichas visualmente según permutación
+    [...board.children].forEach((tile, pos)=>{
+      const tileIndex = perm[pos]; // qué ficha va en esta posición
+      tile.style.order = pos;      // posición en grid
+      tile.dataset.pos = pos;
+      tile.dataset.tileIndex = tileIndex;
+      // Para accesibilidad
+      tile.setAttribute('aria-description', `Ficha ${tileIndex+1} en posición ${pos+1}`);
+    });
+  }
+
+  function onSelect(tile){
+    if(selected === tile){
+      tile.classList.remove('selected');
+      selected = null;
+      return;
+    }
+
+    if(!selected){
+      selected = tile;
+      tile.classList.add('selected');
+      return;
+    }
+
+    // Intercambiar fichas: swap en la permutación según sus “pos”
+    const aPos = +selected.dataset.pos;
+    const bPos = +tile.dataset.pos;
+    [perm[aPos], perm[bPos]] = [perm[bPos], perm[aPos]];
+    selected.classList.remove('selected');
+    selected = null;
+    moves++; updateMoves();
+    applyPositions();
+
+    if(isSolved()){
+      board.classList.add('solved');
+      setMsg('¡Bien! El patrón se ha alineado. Apareció un código de 4 dígitos en cuatro fichas.', 'ok');
+    }
+  }
+
+  function isSolved(){
+    return perm.every((v, i) => v === i);
+  }
+
+  function updateMoves(){ movesEl.textContent = moves; }
+
+  function setMsg(text, cls){
+    msgEl.textContent = text;
+    msgEl.className = `msg ${cls||''}`;
+  }
+
+  // Botones
+  document.getElementById('shuffleBtn').addEventListener('click', shuffle);
+  document.getElementById('cheatBtn').addEventListener('click', ()=>{
+    perm = [...Array(N).keys()];
+    applyPositions();
+    board.classList.add('solved');
+    setMsg('Auto-resuelto para demo: mira el código en las cuatro esquinas interiores 😉', 'ok');
+  });
+
+  document.getElementById('checkBtn').addEventListener('click', ()=>{
+    const val = (document.getElementById('codeInput').value||'').trim();
+    if(!isSolved()){
+      setMsg('Primero resuelve el rompecabezas: alinear el patrón para revelar el código.', 'ko');
+      return;
+    }
+    if(val === SECRET_CODE){
+      setMsg('✅ Código correcto. ¡Reto completado!', 'ok');
+    }else{
+      setMsg('❌ Código incorrecto. Observa bien los cuatro dígitos visibles al resolver.', 'ko');
+    }
+  });
+
+  setup();
+})();
+</script>
+</body>
+</html>
+```
+
+---
+
+## Qué deben implementar / extender
+
+* **Swap** por teclado (opcional): permitir mover una selección con flechas o WASD para accesibilidad.
+* **Modo tiempo**: cronómetro y mejor marca guardada en `localStorage`.
+* **Pistas**: un botón que resalte brevemente dos fichas mal colocadas.
+* **Tamaño variable**: pasar de 3×3 a 4×4 con un `select` y recalcular paridad.
+* **Pruebas**: una función `isSolvable(perm)` con tests simples en consola.
+
+---
+
+## Rúbrica rápida
+
+* **Funcional (40%)**: barajar, intercambiar, detectar “solved”.
+* **UI/UX (20%)**: feedback claro (movimientos, mensajes, accesible).
+* **Código (25%)**: organización, nombres, comentarios, funciones puras donde proceda.
+* **Extras (15%)**: timer, tamaño variable, teclado, pistas, `localStorage`.
+
+
