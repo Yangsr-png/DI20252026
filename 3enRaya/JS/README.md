@@ -4,7 +4,7 @@ Para practicar DOM, eventos, arrays, estados y “victory checks”.
 
 **Objetivo:** Reordenar un rompecabezas 3×3. **Solo cuando esté resuelto aparecerá un código de 4 dígitos** escondido en la composición visual. Ese código hay que introducirlo para “desbloquear” el ejercicio.
 
-## Competencias que entrenan
+## Competencias 
 
 * Manipulación del DOM y eventos (`click`, `keydown` opcional).
 * Modelado de estado con arrays (permutaciones) y comprobación de victoria.
@@ -331,7 +331,7 @@ Copia y pega esto en un `index.html` y ábrelo en el navegador:
 
 ---
 
-## Qué deben implementar / extender
+## Qué implementar / extender
 
 * **Swap** por teclado (opcional): permitir mover una selección con flechas o WASD para accesibilidad.
 * **Modo tiempo**: cronómetro y mejor marca guardada en `localStorage`.
@@ -340,12 +340,4 @@ Copia y pega esto en un `index.html` y ábrelo en el navegador:
 * **Pruebas**: una función `isSolvable(perm)` con tests simples en consola.
 
 ---
-
-## Rúbrica rápida
-
-* **Funcional (40%)**: barajar, intercambiar, detectar “solved”.
-* **UI/UX (20%)**: feedback claro (movimientos, mensajes, accesible).
-* **Código (25%)**: organización, nombres, comentarios, funciones puras donde proceda.
-* **Extras (15%)**: timer, tamaño variable, teclado, pistas, `localStorage`.
-
 
