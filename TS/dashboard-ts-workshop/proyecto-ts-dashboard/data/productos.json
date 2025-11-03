@@ -1,0 +1,17 @@
+[
+  {
+    "nombre": "Ratón",
+    "precio": 20,
+    "unidades": 5
+  },
+  {
+    "nombre": "Teclado",
+    "precio": 40,
+    "unidades": 8
+  },
+  {
+    "nombre": "Pantalla",
+    "precio": 120,
+    "unidades": 3
+  }
+]
