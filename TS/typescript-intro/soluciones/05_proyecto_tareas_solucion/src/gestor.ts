@@ -1,6 +1,6 @@
 // src/gestor.ts (solución)
 
-import { Tarea, crearTarea } from "./tarea";
+import { Tarea, crearTarea } from "./tarea.js";
 
 export class GestorTareas {
   private tareas: Tarea[] = [];

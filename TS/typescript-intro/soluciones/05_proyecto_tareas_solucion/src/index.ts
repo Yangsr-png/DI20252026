@@ -1,6 +1,6 @@
 // src/index.ts (solución)
 
-import { GestorTareas } from "./gestor";
+import { GestorTareas } from "./gestor.js";
 
 const gestor = new GestorTareas();
 
